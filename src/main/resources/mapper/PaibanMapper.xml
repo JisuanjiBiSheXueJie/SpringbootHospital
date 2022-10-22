@@ -1,0 +1,46 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoxin.mapper.PaibanMapper">
+    <select id="findAllPaiban" resultType="paiban">
+        SELECT
+            d.doctorId doctorId,
+            d.doctorName doctorName,
+            p.one ONE,
+            p.two two,
+            p.three three,
+            p.four four,
+            p.five five,
+            p.six six,
+            p.seven seven
+        FROM
+            doctor d
+        LEFT JOIN
+            paiban p
+        ON
+            p.doctorId=d.doctorId
+
+        <where>
+            <if test="doctorName!=null and doctorName!=''">
+                doctorName LIKE CONCAT('%' ,CONCAT(#{doctorName},'%'))
+            </if>
+        </where>
+        ORDER BY
+            d.doctorId
+        DESC
+
+    </select>
+    <update id="editPaiban" parameterType="paiban">
+  update paiban set one=#{one},two=#{two},three=#{three},four=#{four},five=#{five},six=#{six},seven=#{seven} where doctorId=#{doctorId}
+ </update>
+    <select id="findAllBan" resultType="ban">
+        select * from ban
+    </select>
+    <insert id="insertPaiban" parameterType="paiban">
+        insert into paiban (one,two,three,four,five,six,seven,doctorId)values (#{one},#{two},#{three},#{four},#{five},#{six},#{seven},#{doctorId})
+    </insert>
+    <select id="count" resultType="Integer">
+        select count(doctorId) from paiban where doctorId=#{Id}
+    </select>
+</mapper>
